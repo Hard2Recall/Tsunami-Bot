@@ -1,0 +1,14 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# SQLite database (optional: if you don't want to push the DB)
+users.db
+
+# Logs
+*.log
+
+# Replit hidden files (if you host there)
+.replit
