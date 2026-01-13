@@ -10,7 +10,4 @@ users.db
 # Logs
 *.log
 
-# Replit hidden files (if you host there)
-.replit
-
 text.txt
