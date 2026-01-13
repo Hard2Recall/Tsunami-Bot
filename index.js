@@ -29,7 +29,7 @@ app.get('/users', (req, res) => {
     return res.status(403).json({ error: 'Forbidden' });
   }
 
-  db.all('SELECT minecraft_ign, color_hex FROM users', [], (err, rows) => {
+  db.all('SELECT minecraft_ign, minecraft_uuid, color_hex FROM users', [], (err, rows) => {
     if (err) {
       console.error('Database error:', err);
       return res.status(500).json({ error: 'Database error' });
@@ -67,3 +67,7 @@ try {
 } catch (err) {
   console.error('Failed to login bot:', err);
 }
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
