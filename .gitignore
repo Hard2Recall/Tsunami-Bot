@@ -12,3 +12,6 @@ users.db
 
 # Replit hidden files (if you host there)
 .replit
+
+#preview of database
+checkUsers.js
