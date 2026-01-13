@@ -23,11 +23,20 @@ const PORT = process.env.PORT || 3000;
 
 // API endpoint
 app.get('/users', (req, res) => {
-  db.all('SELECT minecraft_ign, minecraft_uuid, color_hex FROM users', [], (err, rows) => {
+  const token = req.query.token; // mod will call /users?token=YOUR_API_TOKEN
+
+  // Check if token matches your secret
+  if (token !== process.env.API_TOKEN) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  // Return all verified Minecraft IGNs and their colors
+  db.all('SELECT minecraft_ign, color_hex FROM users', [], (err, rows) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     res.json(rows);
   });
 });
+
 
 app.listen(PORT, () => console.log(`✅API server running at port ${PORT}`));
 
@@ -52,3 +61,7 @@ client.on('messageCreate', async (message) => {
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
+app.get('/users', (req, res) => {
+  if (req.query.token !== process.env.API_TOKEN) return res.status(403).json({ error: 'Forbidden' });
+});
