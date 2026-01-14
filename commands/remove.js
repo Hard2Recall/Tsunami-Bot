@@ -4,7 +4,7 @@ module.exports = {
   execute: async (client, message, args, db, adminIds) => {
     // Check if the author is an admin
     if (!adminIds.includes(message.author.id)) {
-      message.reply('❌ You do not have permission to use this command.');
+      message.reply('❌ - You are not obligated to execute this command.');
       return;
     }
 

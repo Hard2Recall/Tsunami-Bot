@@ -1,18 +1,18 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 module.exports = {
-  name: 'verify',
-  description: 'Verify a user with Minecraft IGN',
+  name: 'reverify',
+  description: 'Reverify your Minecraft account and correct UUID & Username, and update the color hex',
   execute: async (client, message, args, db, roleColors) => {
     if (!args[0]) {
-      message.reply('⚠️ Please provide your Minecraft IGN. Example: `*verify PlayerName`');
+      message.reply('⚠️ Please provide your Minecraft IGN. Example: `*reverify PlayerName`');
       return;
     }
 
     const ign = args[0];
     const discordId = message.author.id;
 
-    // Check if already verified
+    // Check if user is verified
     db.get('SELECT * FROM users WHERE discord_id = ?', [discordId], async (err, row) => {
       if (err) {
         console.error('Database error:', err);
@@ -20,8 +20,8 @@ module.exports = {
         return;
       }
 
-      if (row) {
-        message.reply('❌ - You have already been verified, use *reverify to reverify if u misspelled your ign.');
+      if (!row) {
+        message.reply('❌ You are not verified yet. Use `*verify` to verify first.');
         return;
       }
 
@@ -59,15 +59,14 @@ module.exports = {
           return;
         }
 
-        const timestamp = Date.now();
-
+        // Update existing user record
         db.run(
-          'INSERT INTO users (discord_id, minecraft_uuid, minecraft_ign, role_id, color_hex, verified_at) VALUES (?, ?, ?, ?, ?, ?)',
-          [discordId, uuid, actualIgn, roleId, colorHex, timestamp],
+          'UPDATE users SET minecraft_uuid = ?, minecraft_ign = ?, role_id = ?, color_hex = ? WHERE discord_id = ?',
+          [uuid, actualIgn, roleId, colorHex, discordId],
           function(err) {
             if (err) {
-              console.error('Failed to save verification:', err);
-              message.reply('❌ Failed to save your verification.');
+              console.error('Failed to update verification:', err);
+              message.reply('❌ Failed to update your verification.');
             } else {
               message.reply(`✅ - You have been succesfully verified with username **${actualIgn}**`);
             }
@@ -75,7 +74,7 @@ module.exports = {
         );
       } catch (error) {
         console.error('Error fetching Mojang API:', error);
-        message.reply('❌ An error occurred while verifying. Try again later.');
+        message.reply('❌ An error occurred while reverifying. Try again later.');
       }
     });
   }

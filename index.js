@@ -18,6 +18,9 @@ const adminIds = require('./config/admins');
 
 const verifyCommand = require('./commands/verify');
 const removeCommand = require('./commands/remove');
+const reverifyCommand = require('./commands/reverify');
+const ignCommand = require('./commands/ign');
+const helpCommand = require('./commands/help');
 
 const prefix = '*';
 
@@ -70,6 +73,12 @@ client.on('messageCreate', async (message) => {
       await verifyCommand.execute(client, message, args, db, roleColors);
     } else if (commandName === 'remove') {
       await removeCommand.execute(client, message, args, db, adminIds);
+    } else if (commandName === 'reverify') {
+      await reverifyCommand.execute(client, message, args, db, roleColors);
+    } else if (commandName === 'ign') {
+      await ignCommand.execute(client, message, args, db);
+    } else if (commandName === 'help') {
+      await helpCommand.execute(client, message, args, db, roleColors, adminIds);
     }
   } catch (err) {
     console.error('Command error:', err);
