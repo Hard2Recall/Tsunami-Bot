@@ -53,7 +53,7 @@ app.get('/users', (req, res) => {
 
 // Start local API server
 app.listen(PORT, '127.0.0.1', () => {
-  console.log(`✅ Local API running at http://localhost:${PORT}/users?token=API_TOKEN`);
+  console.log(`✅ API endpoint: http://your-hosting-domain.com/users?token=API_TOKEN  (check your hosting provider for the correct domain)`);
 });
 
 // Discord Bot Events
