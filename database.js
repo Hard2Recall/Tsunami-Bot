@@ -1,9 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./users.db', (err) => {
   if (err) {
-    console.error('Could not connect to database', err);
+    console.error('❌Could not connect to database', err);
   } else {
-    console.log('Connected to SQLite database');
+    console.log('✅Connected to SQLite database');
   }
 });
 
@@ -19,9 +19,9 @@ db.run(
   )`,
   (err) => {
     if (err) {
-      console.error('Failed to create users table', err);
+      console.error('❌Failed to create users table', err);
     } else {
-      console.log('Users table is ready');
+      console.log('✅Users table is ready');
     }
   }
 );
